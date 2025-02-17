@@ -16,7 +16,8 @@ model User {
   id       String  @id @default(uuid())
   name     String
   email    String  @unique
-  password String  // Será armazenado como hash
+  username String  @unique // Nome de usuário único
+  password String
   role     Role    @default(CLIENT)
   createdAt DateTime @default(now())
 }
