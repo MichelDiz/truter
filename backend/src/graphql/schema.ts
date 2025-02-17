@@ -18,6 +18,7 @@ export const typeDefs = gql`
   type AuthPayload {
     user: User
     message: String!
+    key: String!
   }
 
   type CryptoPrice {

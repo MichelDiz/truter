@@ -102,7 +102,8 @@ export const resolvers = {
 
       return {
         user,
-        message: user.role === "ADMIN" ? `Chave de autenticação gerada: ${authKey}` : "Login bem-sucedido!",
+        message: user.role === "ADMIN" ? `Chave de autenticação gerada` : "Login bem-sucedido!",
+        key: authKey
       };
     },
     updateUser: async (_: any, { id, name, email, role, currentPassword, newPassword }: 
