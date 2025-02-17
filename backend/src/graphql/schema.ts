@@ -49,8 +49,8 @@ export const typeDefs = gql`
   }
 
   type Mutation {
-    createUser(name: String!, email: String!, username: String, password: String!, role: Role!): User!
-    updateUser(id: ID!, name: String, username: String, email: String, role: Role, currentPassword: String!, newPassword: String): User!
+    createUser(name: String!, email: String!, username: String, password: String!, role: Role!, authKey: String): User!
+    updateUser(id: ID!, name: String, username: String, email: String, role: Role, currentPassword: String!, newPassword: String, authKey: String): User!
     updateCryptoPrice(coinId: String!): CryptoPrice!
     loginUser(username: String!, password: String!): AuthPayload!
   }
