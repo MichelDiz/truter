@@ -3,6 +3,14 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const prisma = new PrismaClient();
+const DATABASE_URL = process.env.DATABASE_URL || process.env.DATABASE_URL_LOCAL;
+
+const prisma = new PrismaClient({
+  datasources: {
+    db: {
+      url: DATABASE_URL,
+    },
+  },
+});
 
 export default prisma;
