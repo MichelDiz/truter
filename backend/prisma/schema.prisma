@@ -20,3 +20,15 @@ model User {
   role     Role    @default(CLIENT)
   createdAt DateTime @default(now())
 }
+
+model CryptoPrice {
+  id              String  @id @default(uuid())
+  coinId         String  @unique // ID da CoinGecko (ex: BTC)
+  marketCap      Float?
+  change24h      Float?
+  change7d       Float?
+  allTimeHigh    Float?
+  allTimeLow     Float?
+  currentPrice   Float
+  updatedAt      DateTime @updatedAt
+}
