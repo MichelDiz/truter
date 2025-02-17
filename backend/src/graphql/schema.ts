@@ -9,9 +9,15 @@ export const typeDefs = gql`
   type User {
     id: ID!
     name: String!
+    username: String
     email: String!
     role: Role!
     createdAt: String!
+  }
+
+  type AuthPayload {
+    user: User
+    message: String!
   }
 
   type CryptoPrice {
@@ -42,9 +48,10 @@ export const typeDefs = gql`
   }
 
   type Mutation {
-    createUser(name: String!, email: String!, password: String!, role: Role!): User!
-    updateUser(id: ID!, name: String, email: String, role: Role, currentPassword: String!, newPassword: String): User!
+    createUser(name: String!, email: String!, username: String, password: String!, role: Role!): User!
+    updateUser(id: ID!, name: String, username: String, email: String, role: Role, currentPassword: String!, newPassword: String): User!
     updateCryptoPrice(coinId: String!): CryptoPrice!
+    loginUser(username: String!, password: String!): AuthPayload!
   }
 
 `;

@@ -20,6 +20,8 @@ model User {
   password String
   role     Role    @default(CLIENT)
   createdAt DateTime @default(now())
+  authKey  String? // Chave temporária para autenticação
+  authKeyExpiresAt DateTime? // Expiração da chave temporária
 }
 
 model CryptoPrice {
