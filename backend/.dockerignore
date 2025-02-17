@@ -1,0 +1,22 @@
+# Ignorar node_modules local para evitar conflitos de permissão
+node_modules
+npm-debug.log
+yarn-error.log
+pnpm-debug.log
+
+# Ignorar dependências do TypeScript
+dist
+tsconfig.tsbuildinfo
+
+# Ignorar arquivos de configuração locais
+.env
+.env.local
+.env.development
+.env.production
+
+prisma/migrations
+
+# Ignorar caches do Docker
+.dockerignore
+Dockerfile
+docker-compose.yml
