@@ -16,7 +16,7 @@ model User {
   id       String  @id @default(uuid())
   name     String
   email    String  @unique
-  username String  @unique // Nome de usuário único
+  username String?  @unique // Nome de usuário único || Temporariamente opcional
   password String
   role     Role    @default(CLIENT)
   createdAt DateTime @default(now())
