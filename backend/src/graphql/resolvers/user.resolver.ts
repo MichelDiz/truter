@@ -1,3 +1,4 @@
+import bcrypt from 'bcryptjs';
 import prisma from '../../config/db';
 
 export const resolvers = {
@@ -7,8 +8,12 @@ export const resolvers = {
     },
   },
   Mutation: {
-    createUser: async (_: any, { name, email }: { name: string; email: string }) => {
-      return await prisma.user.create({ data: { name, email } });
+    createUser: async (_: any, { name, email, password, role }: 
+      { name: string; email: string; password: string; role: 'ADMIN' | 'CLIENT' }) => {
+      const hashedPassword = await bcrypt.hash(password, 10);
+      return await prisma.user.create({
+        data: { name, email, password: hashedPassword, role },
+      });
     },
   },
 };
