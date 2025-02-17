@@ -2,12 +2,12 @@
   "name": "backend",
   "version": "1.0.0",
   "main": "index.js",
- "scripts": {
-  "dev": "tsx index.ts",
-  "generate": "npx prisma generate",
-  "migrate": "npx prisma migrate dev",
-  "studio": "npx prisma studio"
-},
+  "scripts": {
+    "dev": "tsx index.ts",
+    "generate": "npx prisma generate",
+    "migrate": "npx prisma migrate dev",
+    "studio": "npx prisma studio"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -15,11 +15,15 @@
   "dependencies": {
     "@apollo/server": "^4.11.3",
     "@prisma/client": "^6.3.1",
+    "axios": "^1.7.9",
+    "bcryptjs": "^3.0.1",
     "dotenv": "^16.4.7",
-    "graphql": "^16.10.0"
+    "graphql": "^16.10.0",
+    "node-cron": "^3.0.3"
   },
   "devDependencies": {
     "@types/node": "^22.13.4",
+    "@types/node-cron": "^3.0.11",
     "graphql-tag": "^2.12.6",
     "prisma": "^6.3.1",
     "tsx": "^4.19.2",
