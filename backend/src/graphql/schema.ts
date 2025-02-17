@@ -32,7 +32,12 @@ export const typeDefs = gql`
     userByEmail(email: String!): User
     userByName(name: String!): [User!]!
     usersByRole(role: Role!): [User!]!
+    
     cryptoPrices: [CryptoPrice!]!
+    cryptoById(id: ID!): CryptoPrice
+    cryptoByCoinId(coinId: String!): CryptoPrice
+    cryptosAboveMarketCap(minMarketCap: Float!): [CryptoPrice!]!
+    cryptosWithPriceRange(minPrice: Float!, maxPrice: Float!): [CryptoPrice!]!
     liveCryptoPrice(coinId: String!): CryptoPrice!
   }
 

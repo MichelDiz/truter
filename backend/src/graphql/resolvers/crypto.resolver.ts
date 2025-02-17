@@ -21,6 +21,36 @@ export const cryptoResolvers = {
         throw new Error("Erro ao buscar dados de preços das criptomoedas.");
       }
     },
+
+    cryptoById: async (_: any, { id }: { id: string }) => {
+      return await prisma.cryptoPrice.findUnique({ where: { id } });
+    },
+
+    cryptoByCoinId: async (_: any, { coinId }: { coinId: string }) => {
+      return await prisma.cryptoPrice.findUnique({ where: { coinId } });
+    },
+
+    cryptosAboveMarketCap: async (_: any, { minMarketCap }: { minMarketCap: number }) => {
+      return await prisma.cryptoPrice.findMany({
+        where: {
+          marketCap: {
+            gt: minMarketCap,
+          },
+        },
+      });
+    },
+
+    cryptosWithPriceRange: async (_: any, { minPrice, maxPrice }: { minPrice: number; maxPrice: number }) => {
+      return await prisma.cryptoPrice.findMany({
+        where: {
+          currentPrice: {
+            gte: minPrice,
+            lte: maxPrice,
+          },
+        },
+      });
+    },
+
     liveCryptoPrice: async (_: any, { coinId }: { coinId: string }) => {
       try {
 
