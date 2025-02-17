@@ -28,12 +28,18 @@ export const typeDefs = gql`
 
   type Query {
     users: [User!]!
+    userById(id: ID!): User
+    userByEmail(email: String!): User
+    userByName(name: String!): [User!]!
+    usersByRole(role: Role!): [User!]!
     cryptoPrices: [CryptoPrice!]!
     liveCryptoPrice(coinId: String!): CryptoPrice!
   }
 
   type Mutation {
     createUser(name: String!, email: String!, password: String!, role: Role!): User!
+    updateUser(id: ID!, name: String, email: String, role: Role, currentPassword: String!, newPassword: String): User!
     updateCryptoPrice(coinId: String!): CryptoPrice!
   }
+
 `;
