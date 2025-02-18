@@ -14,7 +14,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
-  backend:
+  server:
     build: .
     container_name: backend_server
     restart: always
