@@ -1,4 +1,3 @@
-
 FROM node:23.8.0-alpine3.20
 
 WORKDIR /app
@@ -8,8 +7,8 @@ RUN npm install
 
 COPY . .
 
-RUN npx prisma generate
+RUN chmod +x ./scripts/init.sh
 
 EXPOSE 4000
 
-CMD ["npm", "run", "dev"]
+CMD ["/bin/sh", "./scripts/init.sh"]
