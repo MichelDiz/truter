@@ -1,0 +1,41 @@
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #1e293b; /* Azul escuro */
+    color: white;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #334155;
+  }
+  
+  th {
+    background: #0f172a; /* Azul mais escuro */
+  }
+  
+  tr:hover {
+    background: #334155;
+  }
+  
+  td:first-child {
+    font-family: monospace;
+    font-weight: bold;
+  }
+  
+  @media (max-width: 768px) {
+    table {
+      font-size: 14px;
+    }
+    th, td {
+      padding: 8px;
+    }
+  }

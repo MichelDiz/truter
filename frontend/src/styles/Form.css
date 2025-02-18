@@ -1,0 +1,43 @@
+.form-container {
+    max-width: 400px;
+    margin: auto;
+    padding: 20px;
+    background: #1e293b;
+    border-radius: 8px;
+    color: white;
+  }
+  
+  form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  input, select, button {
+    margin-bottom: 12px;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+  }
+  
+  input, select {
+    background: #334155;
+    color: white;
+  }
+  
+  button {
+    background: #0f172a;
+    color: white;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background: #334155;
+  }
+  
+  .error {
+    color: red;
+    font-size: 14px;
+    margin-top: 10px;
+  }
+  
