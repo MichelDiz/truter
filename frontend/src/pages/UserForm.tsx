@@ -10,7 +10,7 @@ export default function UserForm() {
     email: "",
     username: "",
     password: "",
-    role: "USER",
+    role: "CLIENT",
     authKey: "8c1520f4f6a832e7dfbd8465b6708250", // Chave fixa por enquanto
   });
 
@@ -26,7 +26,7 @@ export default function UserForm() {
     e.preventDefault();
     try {
       await createUser({ variables: { ...formData } });
-      setFormData({ name: "", email: "", username: "", password: "", role: "USER", authKey: formData.authKey });
+      setFormData({ name: "", email: "", username: "", password: "", role: "CLIENT", authKey: formData.authKey });
     } catch (err) {
       console.error(err);
     }
@@ -41,7 +41,7 @@ export default function UserForm() {
         <input type="text" name="username" placeholder="Username" value={formData.username} onChange={handleChange} required />
         <input type="password" name="password" placeholder="Senha" value={formData.password} onChange={handleChange} required />
         <select name="role" value={formData.role} onChange={handleChange}>
-          <option value="USER">Usuário</option>
+          <option value="CLIENT">Usuário</option>
           <option value="ADMIN">Admin</option>
         </select>
         <button type="submit" disabled={loading}>

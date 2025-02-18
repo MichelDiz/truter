@@ -4,6 +4,7 @@ import { GET_ALL_CRYPTOS, GET_CRYPTO_BY_ID } from "../graphql/cryptoQueries";
 import "../styles/Table.css";
 
 import _ from "lodash";
+import { formatMarketCap } from "../utils/formatNumber";
 
 export default function CryptoSearch() {
   const { loading, error, data, refetch } = useQuery(GET_ALL_CRYPTOS);
@@ -14,13 +15,13 @@ export default function CryptoSearch() {
 
   const handleSearch = () => {
     if (searchTerm.trim() === "") {
-      refetch(); // Se limpar a busca, volta para a lista completa
+      refetch();
       setSearchActive(false);
       return;
     }
-
+  
     setSearchActive(true);
-    searchCrypto({ variables: { coinId: searchTerm.toUpperCase() } }); // Converte para maiúsculas (padrão de IDs de criptos)
+    searchCrypto({ variables: { coinId: searchTerm.trim().toLowerCase() } });
   };
 
   // Se o usuário apagar o campo, volta à lista completa
@@ -78,7 +79,7 @@ export default function CryptoSearch() {
                   <td>{crypto.id.slice(-12)}</td>
                   <td>{_.startCase(crypto.coinId) }</td>
                   <td>U$ {crypto.currentPrice.toFixed(2)}</td>
-                  <td>U$ {crypto.marketCap?.toLocaleString() || "N/A"}</td>
+                  <td>{crypto.marketCap ? formatMarketCap(crypto.marketCap) : "N/A"}</td>
                   <td style={{ color: crypto.change24h >= 0 ? "lightgreen" : "red" }}>
                     {crypto.change24h?.toFixed(2) || "N/A"}%
                   </td>
