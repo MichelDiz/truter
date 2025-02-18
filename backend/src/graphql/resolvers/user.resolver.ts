@@ -106,8 +106,8 @@ export const resolvers = {
         key: authKey
       };
     },
-    updateUser: async (_: any, { id, name, email, role, currentPassword, newPassword }: 
-      { id: string; name?: string; email?: string; role?: 'ADMIN' | 'CLIENT'; currentPassword: string; newPassword?: string }) => {
+    updateUser: async (_: any, { id, name, email, role, currentPassword, newPassword, username}: 
+      { id: string; name?: string; email?: string; role?: 'ADMIN' | 'CLIENT'; currentPassword: string; newPassword?: string; username?: String;}) => {
 
       const user = await prisma.user.findUnique({ where: { id } });
       if (!user) {
@@ -123,6 +123,7 @@ export const resolvers = {
       if (name) updateData.name = name;
       if (email) updateData.email = email;
       if (role) updateData.role = role;
+      if (username) updateData.username = username;
 
       if (newPassword) {
         updateData.password = await bcrypt.hash(newPassword, 10);
