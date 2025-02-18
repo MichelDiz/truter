@@ -3,6 +3,8 @@ import { useState, useEffect } from "react";
 import { GET_ALL_CRYPTOS, GET_CRYPTO_BY_ID } from "../graphql/cryptoQueries";
 import "../styles/Table.css";
 
+import _ from "lodash";
+
 export default function CryptoSearch() {
   const { loading, error, data, refetch } = useQuery(GET_ALL_CRYPTOS);
   const [searchTerm, setSearchTerm] = useState("");
@@ -74,13 +76,13 @@ export default function CryptoSearch() {
               cryptos.map((crypto: any) => (
                 <tr key={crypto.id}>
                   <td>{crypto.id.slice(-12)}</td>
-                  <td>{crypto.coinId}</td>
-                  <td>${crypto.currentPrice.toFixed(2)}</td>
-                  <td>${crypto.marketCap?.toLocaleString() || "N/A"}</td>
+                  <td>{_.startCase(crypto.coinId) }</td>
+                  <td>U$ {crypto.currentPrice.toFixed(2)}</td>
+                  <td>U$ {crypto.marketCap?.toLocaleString() || "N/A"}</td>
                   <td style={{ color: crypto.change24h >= 0 ? "lightgreen" : "red" }}>
                     {crypto.change24h?.toFixed(2) || "N/A"}%
                   </td>
-                  <td>{new Date(crypto.updatedAt).toLocaleString()}</td>
+                  <td>{new Date(Number(crypto.updatedAt)).toLocaleString()}</td>
                 </tr>
               ))
             ) : (
