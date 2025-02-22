@@ -1,0 +1,57 @@
+services:
+
+  nginx:
+    build: ./frontend
+    container_name: nginx_proxy
+    restart: always
+    depends_on:
+      - backend
+    ports:
+      - "80:80"
+    environment:
+      - VITE_API_URL=http://localhost/graphql
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - type: tmpfs
+        target: /var/log/nginx
+
+#! Importante. Os dados aqui serão apagdos após a execução.
+  postgres:
+    image: postgres:15
+    container_name: postgres_db
+    restart: always
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: mydatabase
+    ports:
+      - "5432:5432"
+    volumes:
+      - type: tmpfs
+        target: /var/lib/postgresql/data
+
+  backend:
+    build: ./backend
+    container_name: backend_server
+    restart: always
+    environment:
+      DATABASE_URL: "postgresql://admin:secret@postgres:5432/mydatabase"
+    ports:
+      - "4000:4000"
+    depends_on:
+      - postgres
+    volumes:
+      - type: tmpfs
+        target: /app/tmp
+  e2e-tests:
+    build: ./e2e
+    restart: "no"
+    container_name: e2e-tests
+    working_dir: /app
+    depends_on:
+      - backend
+    environment:
+      - ROD_BROWSER_BIN=/usr/bin/chromium
+    volumes:
+      - type: tmpfs
+        target: /app
