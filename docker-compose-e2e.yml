@@ -29,6 +29,10 @@ services:
     volumes:
       - type: tmpfs
         target: /var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d mydatabase"]
+      interval: 10s
+      retries: 5
 
   backend:
     build: ./backend
@@ -39,7 +43,8 @@ services:
     ports:
       - "4000:4000"
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
     volumes:
       - ./backend:/app
       - /app/node_modules
@@ -55,5 +60,8 @@ services:
       - ROD_BROWSER_BIN=/usr/bin/chromium
     volumes:
       - ./e2e:/app
+      - ./backend:/backend
+      - ./frontend:/frontend
+      - /var/run/docker.sock:/var/run/docker.sock
     command: >
       sh -c "go test -v ./... | tee /app/e2e.log; test $${?} -eq 0"
