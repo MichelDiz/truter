@@ -22,12 +22,12 @@ func TestNginxUp(t *testing.T) {
 	}
 }
 
-func TestBackend(t *testing.T) {
+func TestPubBackend(t *testing.T) {
 	client := &http.Client{}
 
 	query := `{"query": "{ __typename }"}`
 
-	req, err := http.NewRequest("POST", "http://backend:4000/graphql", bytes.NewBuffer([]byte(query)))
+	req, err := http.NewRequest("POST", "http://nginx/graphql", bytes.NewBuffer([]byte(query)))
 	if err != nil {
 		t.Fatalf("Erro ao criar requisição: %v", err)
 	}
@@ -43,6 +43,30 @@ func TestBackend(t *testing.T) {
 
 	if resp.StatusCode != 200 {
 		t.Errorf("Esperado HTTP 200 da API, mas recebeu %d", resp.StatusCode)
+	}
+}
+
+func TestGraphQLQueries(t *testing.T) {
+	endpoint := "http://backend:4000/graphql"
+
+	tests := []struct {
+		name     string
+		query    string
+		expected int
+	}{
+		{"Test __typename", `{ __typename }`, 200},
+		{"Test Users", `{ users { id name } }`, 200},
+		{"Test Invalid Query", `{ invalidField }`, 400},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			statusCode, body := GraphQLRequest(t, endpoint, tt.query)
+
+			if statusCode != tt.expected {
+				t.Errorf("Esperado HTTP %d, mas recebeu %d. Resposta: %s", tt.expected, statusCode, body)
+			}
+		})
 	}
 }
 
