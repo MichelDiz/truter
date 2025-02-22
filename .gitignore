@@ -27,3 +27,6 @@ Temporary Items
 dist/
 npm-debug.log
 yarn-error.log
+
+*.log
+*_done
