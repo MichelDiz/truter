@@ -29,6 +29,9 @@ const updatePrices = async () => {
   }
 };
 
+// Roda 1 vez no inicio.
+updatePrices();
+
 // Rodar a cada 1 minuto
 cron.schedule('* * * * *', updatePrices);
 
