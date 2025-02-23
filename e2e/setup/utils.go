@@ -6,7 +6,11 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"log"
+	"math/rand"
 	"net/http"
+	"os/exec"
+	"strings"
 	"testing"
 	"time"
 )
@@ -46,6 +50,23 @@ func GraphQLRequest(t *testing.T, endpoint string, gqlQuery string, variables ma
 	return resp.StatusCode, string(body)
 }
 
+func getBackendContainerName() string {
+	cmd := exec.Command("docker", "ps", "--format", "{{.Names}}")
+	output, err := cmd.Output()
+	if err != nil {
+		log.Fatalf("Erro ao verificar containers em execução: %v", err)
+	}
+	containers := strings.Split(string(output), "\n")
+
+	for _, container := range containers {
+		if strings.Contains(container, "backend") {
+			return strings.TrimSpace(container)
+		}
+	}
+	log.Fatalf("Erro: Nenhum container backend encontrado!")
+	return ""
+}
+
 func WaitForSeedData(db *sql.DB, tableName string) error {
 	timeout := time.After(10 * time.Second)
 	tick := time.Tick(500 * time.Millisecond)
@@ -80,4 +101,17 @@ func WaitForTableExists(db *sql.DB, tableName string) error {
 			}
 		}
 	}
+}
+
+func GenerateRandomUser() (name, email, username, password string) {
+	rng := rand.New(rand.NewSource(time.Now().UnixNano()))
+
+	id := rng.Intn(1000000)
+
+	name = fmt.Sprintf("Usuário %d", id)
+	email = fmt.Sprintf("usuario%d@email.com", id)
+	username = fmt.Sprintf("user%d", id)
+	password = "SenhaForte!123"
+
+	return name, email, username, password
 }

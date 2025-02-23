@@ -4,27 +4,9 @@ import (
 	"database/sql"
 	"log"
 	"os/exec"
-	"strings"
 
 	_ "github.com/lib/pq"
 )
-
-func getBackendContainerName() string {
-	cmd := exec.Command("docker", "ps", "--format", "{{.Names}}")
-	output, err := cmd.Output()
-	if err != nil {
-		log.Fatalf("Erro ao verificar containers em execução: %v", err)
-	}
-	containers := strings.Split(string(output), "\n")
-
-	for _, container := range containers {
-		if strings.Contains(container, "backend") {
-			return strings.TrimSpace(container)
-		}
-	}
-	log.Fatalf("Erro: Nenhum container backend encontrado!")
-	return ""
-}
 
 // RunSeed executa `tsx ./prisma/seed.ts`
 func RunSeed() {
