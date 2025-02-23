@@ -1,10 +1,13 @@
 import { useMutation } from "@apollo/client";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom"; 
 import { CREATE_USER } from "../graphql/mutations";
 import { GET_USERS } from "../graphql/queries"; // Para atualizar a lista após criar um usuário
 import "../styles/Form.css";
 
 export default function UserForm() {
+  const navigate = useNavigate();
+  
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -26,11 +29,12 @@ export default function UserForm() {
     e.preventDefault();
     try {
       await createUser({ variables: { ...formData } });
-      setFormData({ name: "", email: "", username: "", password: "", role: "CLIENT", authKey: formData.authKey });
+      navigate("/success");
     } catch (err) {
       console.error(err);
     }
   };
+
 
   return (
     <div className="form-container">
