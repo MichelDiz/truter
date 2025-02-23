@@ -32,4 +32,18 @@ func GetDbURL() string {
 		dbUser, dbPassword, dbHost, dbPort, dbName)
 }
 
+func GetFrontURL() string {
+	URLHost := os.Getenv("DB_HOST")
+
+	if URLHost == "" {
+		URLHost = "http://localhost"
+	} else {
+		URLHost = "http://nginx"
+	}
+
+	return fmt.Sprint(URLHost)
+}
+
 var DbURL = GetDbURL()
+
+var FrontURL = GetFrontURL()
