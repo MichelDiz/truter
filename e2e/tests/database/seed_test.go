@@ -2,21 +2,20 @@ package database
 
 import (
 	"database/sql"
-	"fmt"
+	"e2e/truter/setup"
 	"testing"
-	"time"
 
 	_ "github.com/lib/pq"
 )
 
 func TestSuperAdminExists(t *testing.T) {
-	db, err := sql.Open("postgres", dbURL)
+	db, err := sql.Open("postgres", setup.DbURL)
 	if err != nil {
 		t.Fatalf("Erro ao conectar ao banco: %v", err)
 	}
 	defer db.Close()
 
-	err = WaitForTableExists(db, "User")
+	err = setup.WaitForTableExists(db, "User")
 	if err != nil {
 		t.Fatalf("Erro: %v", err)
 	}
@@ -33,33 +32,20 @@ func TestSuperAdminExists(t *testing.T) {
 	}
 }
 
-func WaitForTableExists(db *sql.DB, tableName string) error {
-	timeout := time.After(10 * time.Second)
-	tick := time.Tick(500 * time.Millisecond)
-
-	for {
-		select {
-		case <-timeout:
-			return fmt.Errorf("Timeout ao esperar pela tabela %s", tableName)
-		case <-tick:
-			var exists bool
-			err := db.QueryRow("SELECT EXISTS (SELECT FROM information_schema.tables WHERE table_name = $1)", tableName).Scan(&exists)
-			if err == nil && exists {
-				return nil
-			}
-		}
-	}
-}
-
 func TestUsersExistAfterSeed(t *testing.T) {
-	db, err := sql.Open("postgres", dbURL)
+	db, err := sql.Open("postgres", setup.DbURL)
 	if err != nil {
 		t.Fatalf("Erro ao conectar ao banco: %v", err)
 	}
 	defer db.Close()
 
+	err = setup.WaitForTableExists(db, "User")
+	if err != nil {
+		t.Fatalf("Erro: %v", err)
+	}
+
 	var count int
-	query := `SELECT COUNT(*) FROM "User"`
+	query := `SELECT COUNT(*) FROM "User" LIMIT 100`
 	err = db.QueryRow(query).Scan(&count)
 	if err != nil {
 		t.Fatalf("Erro ao contar usuários: %v", err)
@@ -71,11 +57,16 @@ func TestUsersExistAfterSeed(t *testing.T) {
 }
 
 func TestUserPasswordIsHashed(t *testing.T) {
-	db, err := sql.Open("postgres", dbURL)
+	db, err := sql.Open("postgres", setup.DbURL)
 	if err != nil {
 		t.Fatalf("Erro ao conectar ao banco: %v", err)
 	}
 	defer db.Close()
+
+	err = setup.WaitForTableExists(db, "User")
+	if err != nil {
+		t.Fatalf("Erro: %v", err)
+	}
 
 	var passwordHash string
 	query := `SELECT password FROM "User" WHERE email = 'superadmin@email.com'`

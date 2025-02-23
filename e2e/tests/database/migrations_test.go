@@ -2,15 +2,14 @@ package database
 
 import (
 	"database/sql"
+	"e2e/truter/setup"
 	"testing"
 
 	_ "github.com/lib/pq"
 )
 
-const dbURL = "postgresql://admin:secret@postgres:5432/mydatabase?sslmode=disable"
-
 func TestTablesExist(t *testing.T) {
-	db, err := sql.Open("postgres", dbURL)
+	db, err := sql.Open("postgres", setup.DbURL)
 	if err != nil {
 		t.Fatalf("Erro ao conectar ao banco: %v", err)
 	}
@@ -34,7 +33,7 @@ func TestTablesExist(t *testing.T) {
 }
 
 func TestColumnsExist(t *testing.T) {
-	db, err := sql.Open("postgres", dbURL)
+	db, err := sql.Open("postgres", setup.DbURL)
 	if err != nil {
 		t.Fatalf("Erro ao conectar ao banco: %v", err)
 	}
