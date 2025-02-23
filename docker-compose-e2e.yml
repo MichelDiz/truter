@@ -58,10 +58,18 @@ services:
       - backend
     environment:
       - ROD_BROWSER_BIN=/usr/bin/chromium
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USER=admin
+      - DB_PASSWORD=secret
+      - DB_NAME=mydatabase
     volumes:
       - ./e2e:/app
       - ./backend:/backend
       - ./frontend:/frontend
       - /var/run/docker.sock:/var/run/docker.sock
     command: >
-      sh -c "go test -v ./... | tee /app/e2e.log; test $${?} -eq 0"
+      sh -c "
+      go test -v /app/main_test.go | tee /app/e2e_main.log && 
+      go test -v /app/tests/... | tee /app/e2e.log; 
+      test $${?} -eq 0"
