@@ -29,4 +29,5 @@ main()
     })
     .finally(async () => {
         await prisma.$disconnect();
+        console.log("Seed finalizado");
     });

@@ -3,6 +3,7 @@ package main
 import (
 	"e2e/truter/setup"
 	"log"
+	"os"
 	"testing"
 )
 
@@ -19,8 +20,5 @@ func TestMain(m *testing.M) {
 	setup.CreateUsers()
 
 	log.Println("Iniciando Testes...")
-	m.Run()
-	// for {
-	// 	fmt.Println("rodando")
-	// }
+	os.Exit(m.Run())
 }
