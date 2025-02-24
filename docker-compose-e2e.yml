@@ -45,9 +45,6 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-    volumes:
-      - ./backend:/app
-      - /app/node_modules
 
   e2e-tests:
     build: ./e2e
@@ -74,3 +71,9 @@ services:
       go test -v /app/main_test.go | tee /app/e2e_main.log && sleep 3 &&
       go test -v /app/tests/... | tee /app/e2e.log;
       test $${?} -eq 0"
+
+  mock-api:
+    container_name: CoinGecko
+    build: ./CoinGecko
+    ports:
+      - "8082:8082"
