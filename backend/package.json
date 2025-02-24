@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/index.js",
     "dev": "tsx index.ts",
     "seed": "tsx ./prisma/seed.ts",
     "generate": "npx prisma generate",

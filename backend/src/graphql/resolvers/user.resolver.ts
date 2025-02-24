@@ -1,4 +1,4 @@
-import bcrypt from 'bcryptjs';
+import * as bcrypt from 'bcryptjs';
 import { randomBytes } from 'crypto';
 import prisma from '../../config/db';
 
