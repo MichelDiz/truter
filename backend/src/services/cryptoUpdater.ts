@@ -1,15 +1,15 @@
-import cron from 'node-cron';
+import * as cron from 'node-cron';
 import prisma from '../config/db';
 import axios from 'axios';
 
 const COINS = ['bitcoin', 'ethereum', 'solana'];
-const COINGECKO_API = 'https://api.coingecko.com/api/v3/simple/price';
+// const COINGECKO_API = 'https://api.coingecko.com/api/v3/simple/price';
+const COINGECKO_API = 'http://coingecko:8082/api/v3/simple/price';
 
 const updatePrices = async () => {
   console.log("Atualizando preços...");
   
   const { data } = await axios.get(`${COINGECKO_API}?ids=${COINS.join(',')}&vs_currencies=usd&include_market_cap=true&include_24hr_change=true`);
-  
   for (const coinId of COINS) {
     await prisma.cryptoPrice.upsert({
       where: { coinId },
