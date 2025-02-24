@@ -1,7 +1,7 @@
 # truter
 Desafio truter
 
-# Setu necessário
+# Setup necessário
 
 Docker e Docker Compose. Mais nada.
 
