@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
 
   nginx:
@@ -38,9 +36,12 @@ services:
       - "4000:4000"
     depends_on:
       - postgres
-    volumes:
-      - ./backend:/app
-      - /app/node_modules
+
+  mock-api:
+    container_name: CoinGecko
+    build: ./CoinGecko
+    ports:
+      - "8082:8082"
 
 volumes:
   postgres_data:

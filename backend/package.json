@@ -3,8 +3,10 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/index.js",
     "dev": "tsx index.ts",
-    "seed": "tsx ./prisma/seed.ts",
+    "seed": "npx tsx ./prisma/seed.ts",
     "generate": "npx prisma generate",
     "migrate": "npx prisma migrate dev",
     "studio": "npx prisma studio"
@@ -20,12 +22,12 @@
     "bcryptjs": "^3.0.1",
     "dotenv": "^16.4.7",
     "graphql": "^16.10.0",
+    "graphql-tag": "^2.12.6",
     "node-cron": "^3.0.3"
   },
   "devDependencies": {
     "@types/node": "^22.13.4",
     "@types/node-cron": "^3.0.11",
-    "graphql-tag": "^2.12.6",
     "prisma": "^6.3.1",
     "tsx": "^4.19.2",
     "typescript": "^5.7.3"
