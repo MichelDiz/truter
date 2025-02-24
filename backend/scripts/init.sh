@@ -5,13 +5,13 @@ until nc -z postgres 5432; do
   sleep 2
 done
 
-echo "Rodando migrations..."
-npx prisma migrate dev
-
 # Rodar migrations e seed apenas na primeira vez
 if [ ! -f "./scripts/.init_done" ]; then
+  echo "Rodando migrations..."
+  npx prisma migrate dev --name "migration_$(date +%Y%m%d_%H%M%S)"
+
   echo "Rodando seed para criar Super Admin..."
-  npm run seed
+  npx tsx ./prisma/seed.ts
 
   echo "Criando usuários fictícios..."
   node ./scripts/create_users.js
@@ -23,4 +23,4 @@ else
 fi
 
 echo "Iniciando o servidor..."
-npm run dev
+npm run start
