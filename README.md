@@ -1,5 +1,5 @@
-# truter
-Desafio truter
+# Truter
+Desafio Truter* (fake name)
 
 # Setup necessário
 
