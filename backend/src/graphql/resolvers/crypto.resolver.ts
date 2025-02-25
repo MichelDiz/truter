@@ -3,18 +3,26 @@ import prisma from '../../config/db';
 
 const COINGECKO_API = 'https://api.coingecko.com/api/v3/simple/price';
 
+interface CryptoPrice {
+  id: string;
+  coinId: string;
+  marketCap: number | null;
+  change24h: number | null;
+  currentPrice: number;
+  allTimeHigh: number | null;
+  allTimeLow: number | null;
+  updatedAt: Date;
+}
+
 export const cryptoResolvers = {
   Query: {
-    cryptoPrices: async () => {
+    cryptoPrices: async (): Promise<CryptoPrice[]> => {
       try {
-
         const prices = await prisma.cryptoPrice.findMany();
-
         if (!prices || prices.length === 0) {
           console.warn("Nenhum dado encontrado no banco!");
           return [];
         }
-
         return prices;
       } catch (error) {
         console.error("Erro ao buscar preços no banco:", error);
@@ -22,15 +30,15 @@ export const cryptoResolvers = {
       }
     },
 
-    cryptoById: async (_: any, { id }: { id: string }) => {
+    cryptoById: async (_: unknown, { id }: { id: string }): Promise<CryptoPrice | null> => {
       return await prisma.cryptoPrice.findUnique({ where: { id } });
     },
 
-    cryptoByCoinId: async (_: any, { coinId }: { coinId: string }) => {
+    cryptoByCoinId: async (_: unknown, { coinId }: { coinId: string }): Promise<CryptoPrice | null> => {
       return await prisma.cryptoPrice.findUnique({ where: { coinId } });
     },
 
-    cryptosAboveMarketCap: async (_: any, { minMarketCap }: { minMarketCap: number }) => {
+    cryptosAboveMarketCap: async (_: unknown, { minMarketCap }: { minMarketCap: number }): Promise<CryptoPrice[]> => {
       return await prisma.cryptoPrice.findMany({
         where: {
           marketCap: {
@@ -40,7 +48,7 @@ export const cryptoResolvers = {
       });
     },
 
-    cryptosWithPriceRange: async (_: any, { minPrice, maxPrice }: { minPrice: number; maxPrice: number }) => {
+    cryptosWithPriceRange: async (_: unknown, { minPrice, maxPrice }: { minPrice: number; maxPrice: number }): Promise<CryptoPrice[]> => {
       return await prisma.cryptoPrice.findMany({
         where: {
           currentPrice: {
@@ -51,14 +59,13 @@ export const cryptoResolvers = {
       });
     },
 
-    liveCryptoPrice: async (_: any, { coinId }: { coinId: string }) => {
+    liveCryptoPrice: async (_: unknown, { coinId }: { coinId: string }): Promise<CryptoPrice> => {
       try {
-
+        console.log(`Fetching live data for "${coinId}"`);
         const { data } = await axios.get(`${COINGECKO_API}?ids=${coinId}&vs_currencies=usd&include_market_cap=true&include_24hr_change=true`);
-
         if (!data[coinId]) {
           console.error(`Coin "${coinId}" not found on CoinGecko`);
-          throw new Error(`Coin "${coinId}" not found on CoinGecko`);
+          // throw new Error(`Coin "${coinId}" not found on CoinGecko`);
         }
 
         return {
@@ -69,7 +76,7 @@ export const cryptoResolvers = {
           currentPrice: data[coinId].usd || 0,
           allTimeHigh: null,  // Adicionei esses valores como null por enquanto
           allTimeLow: null,   // pois a API não os fornece diretamente.
-          updatedAt: new Date().toISOString(),
+          updatedAt: new Date(),
         };
       } catch (error) {
         console.error("Error fetching data from CoinGecko:", error);
@@ -77,10 +84,10 @@ export const cryptoResolvers = {
       }
     },
   },
-  Mutation: {
-    updateCryptoPrice: async (_: any, { coinId }: { coinId: string }) => {
-      const { data } = await axios.get(`${COINGECKO_API}?ids=${coinId}&vs_currencies=usd&include_market_cap=true&include_24hr_change=true`);
 
+  Mutation: {
+    updateCryptoPrice: async (_: unknown, { coinId }: { coinId: string }): Promise<CryptoPrice> => {
+      const { data } = await axios.get(`${COINGECKO_API}?ids=${coinId}&vs_currencies=usd&include_market_cap=true&include_24hr_change=true`);
       return await prisma.cryptoPrice.upsert({
         where: { coinId },
         update: {
@@ -94,6 +101,9 @@ export const cryptoResolvers = {
           marketCap: data[coinId].usd_market_cap,
           change24h: data[coinId].usd_24h_change,
           currentPrice: data[coinId].usd,
+          allTimeHigh: null,
+          allTimeLow: null,
+          updatedAt: new Date(),
         },
       });
     },
