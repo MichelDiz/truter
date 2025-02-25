@@ -8,7 +8,7 @@ RUN npm install
 COPY . .
 
 RUN npm run build
-RUN ls -la
+RUN npm install -g rimraf && npm run clean-node-modules
 
 # Remove as dependências de desenvolvimento para otimizar a imagem
 RUN npm prune --production

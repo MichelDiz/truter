@@ -9,7 +9,8 @@
     "seed": "npx tsx ./prisma/seed.ts",
     "generate": "npx prisma generate",
     "migrate": "npx prisma migrate dev",
-    "studio": "npx prisma studio"
+    "studio": "npx prisma studio",
+    "clean-node-modules": "rimraf \"node_modules/**/*.{md,markdown,LICENSE,LICENSE.txt,LICENSE.md}\""
   },
   "keywords": [],
   "author": "",
