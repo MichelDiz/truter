@@ -16,3 +16,21 @@ Docker e Docker Compose. Mais nada.
 # Rodando Testes e2e
 
 Basta rodar `bash runtTests.sh` e aguardar o processo.
+
+# Possíveis Adições Futuras
+
+## Observabilidade e Monitoramento
+- **OpenTelemetry e Jaeger** → Para implementar tracing distribuído e monitorar requisições no sistema.
+- **Node.js CPU Profiling** → Para identificar gargalos de desempenho no backend.  
+  - Uma boa referência para leitura e análise de perfis de CPU: [cpupro](https://discoveryjs.github.io/cpupro/).
+
+## Testes de Carga e Segurança
+- **Criar um programa em Go** → Desenvolver uma ferramenta para simular chamadas esperadas no sistema, incluindo testes de carga e cenários adversos.  
+  - Possível implementação de ataques **DDoS controlados** para avaliar a resiliência do backend.
+
+---
+
+### Sugestões Futuras
+- Adicionar métricas com **Prometheus** e visualização via **Grafana**.
+- Explorar **Auto-Instrumentação do Node.js com OpenTelemetry** para simplificar o tracing.
+- Criar alertas baseados em **métricas de CPU e latência**.
